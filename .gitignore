@@ -30,4 +30,4 @@ build/
 ### VS Code ###
 .vscode/
 
-resources/application.properties
+srs/main/resources/application.properties
