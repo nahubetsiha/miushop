@@ -1,11 +1,10 @@
 package com.ea.miushop.domain;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Table(name = "users")
 @Entity
-public class Customer {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,14 +14,13 @@ public class Customer {
 
     private String lastName;
 
-    private String studentId;
-
     private String email;
 
-    @OneToMany(mappedBy = "customer")
-    private List<Order> orderHistory;
+    @OneToOne
+    @JoinColumn(name = "user_credentials_id")
+    private UserCredentials userCredentials;
 
-    public Customer() {
+    public User() {
     }
 
     public Long getUserId() {
@@ -49,13 +47,6 @@ public class Customer {
         this.lastName = lastName;
     }
 
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
 
     public String getEmail() {
         return email;
@@ -65,11 +56,11 @@ public class Customer {
         this.email = email;
     }
 
-    public List<Order> getOrderHistory() {
-        return orderHistory;
+    public UserCredentials getUserCredentials() {
+        return userCredentials;
     }
 
-    public void setOrderHistory(List<Order> orderHistory) {
-        this.orderHistory = orderHistory;
+    public void setUserCredentials(UserCredentials userCredentials) {
+        this.userCredentials = userCredentials;
     }
 }
