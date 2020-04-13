@@ -3,8 +3,9 @@ package com.ea.miushop.domain;
 import javax.persistence.*;
 import java.util.List;
 
-@Table(name = "users")
+
 @Entity
+@Table(name = "users")
 public class Customer {
 
     @Id
