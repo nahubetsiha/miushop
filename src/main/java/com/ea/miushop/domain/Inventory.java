@@ -1,12 +1,8 @@
 package com.ea.miushop.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "inventory")
 @Entity
@@ -21,6 +17,11 @@ public class Inventory {
 	private Product product;
 	
 	private Integer quantity;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable ( name="inventory_movement", joinColumns={@JoinColumn(name="inventory_id")},
+			inverseJoinColumns={ @JoinColumn(name="storage_movement_id", unique=true)} )
+	private List<StorageMovement> movements = new ArrayList<StorageMovement>();
 
 	public Inventory() {
 	}
@@ -48,7 +49,12 @@ public class Inventory {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-	
-	
-	
+
+	public List<StorageMovement> getMovements() {
+		return movements;
+	}
+
+	public void setMovements(List<StorageMovement> movements) {
+		this.movements = movements;
+	}
 }
