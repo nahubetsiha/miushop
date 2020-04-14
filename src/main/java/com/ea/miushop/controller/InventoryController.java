@@ -26,7 +26,7 @@ public class InventoryController {
     }
 
     @PostMapping(value = "new-inventory", produces = MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-    public void enterInventory(Inventory inventory){
+    public void enterInventory(@RequestBody Inventory inventory){
         inventoryService.enterInventory(inventory);
     }
 }
