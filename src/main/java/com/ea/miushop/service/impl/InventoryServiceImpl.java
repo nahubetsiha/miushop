@@ -7,7 +7,12 @@ import com.ea.miushop.domain.StorageMovement;
 import com.ea.miushop.repository.InventoryRepository;
 import com.ea.miushop.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
+@Service
+@Transactional
 public class InventoryServiceImpl implements InventoryService {
 
 	@Autowired
