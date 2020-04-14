@@ -26,7 +26,7 @@ public class ProductController {
     }
 
     @PostMapping(value = "new-product", produces = MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-    public void makeProduct(Product product){
+    public void makeProduct(@RequestBody Product product){
         productService.createProduct(product);
     }
 

@@ -26,7 +26,8 @@ public class CategoryController {
     }
 
     @PostMapping(value = "new-category", produces = MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-    public void createCategory(Category category){
+    public void createCategory(@RequestBody Category category){
+        System.out.println(category);
         categoryService.createCategory(category);
     }
 
