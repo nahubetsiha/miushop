@@ -26,8 +26,18 @@ public class OrderController {
     }
 
     @PostMapping(value = "new-order", produces = MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-    public void makeOrder(Order order){
+    public void makeOrder(@RequestBody Order order){
         orderService.makeOrder(order);
+    }
+
+    @PostMapping(value = "process-order/{id}", produces = MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+    public void processOrder(@PathVariable Long id){
+        orderService.processOrder(id);
+    }
+
+    @PostMapping(value = "buy-order/{id}", produces = MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+    public void buyOrder(@PathVariable Long id){
+        orderService.buyOrder(id);
     }
 
 }
