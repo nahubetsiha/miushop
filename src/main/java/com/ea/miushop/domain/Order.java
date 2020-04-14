@@ -18,77 +18,61 @@ public class Order {
 
     private LocalDate orderDate;
 
-    private boolean orderBought;
+    private String orderNumber;
+
+    public enum Status {RECEIVED, PROCESSED, BOUGHT, DELIVERED}
+
+    private Status orderStatus = Status.RECEIVED;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
-    
-    
-    @OneToOne(fetch=FetchType.LAZY,  cascade = CascadeType.ALL) 
-	@JoinColumn(name="OrderId") 
-	private Purchase_Order purchaseOrder;
+    @JoinColumn(name = "user_id")
+    private User user;
 
+    public Long getOrderId() {
+        return orderId;
+    }
 
-	public Long getOrderId() {
-		return orderId;
-	}
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
 
+    public List<Item> getItems() {
+        return items;
+    }
 
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
-	}
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
 
+    public LocalDate getOrderDate() {
+        return orderDate;
+    }
 
-	public List<Item> getItems() {
-		return items;
-	}
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
+    }
 
+    public String getOrderNumber() {
+        return orderNumber;
+    }
 
-	public void setItems(List<Item> items) {
-		this.items = items;
-	}
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
 
+    public Status getOrderStatus() {
+        return orderStatus;
+    }
 
-	public LocalDate getOrderDate() {
-		return orderDate;
-	}
+    public void setOrderStatus(Status orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 
+    public User getUser() {
+        return user;
+    }
 
-	public void setOrderDate(LocalDate orderDate) {
-		this.orderDate = orderDate;
-	}
-
-
-	public boolean isOrderBought() {
-		return orderBought;
-	}
-
-
-	public void setOrderBought(boolean orderBought) {
-		this.orderBought = orderBought;
-	}
-
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-
-
-	public Purchase_Order getPurchaseOrder() {
-		return purchaseOrder;
-	}
-
-
-	public void setPurchaseOrder(Purchase_Order purchaseOrder) {
-		this.purchaseOrder = purchaseOrder;
-	}
-    
-    
-    
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

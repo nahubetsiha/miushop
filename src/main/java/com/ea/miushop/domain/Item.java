@@ -15,6 +15,8 @@ public class Item {
 
     private int quantity;
 
+    private boolean bought = false;
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
@@ -52,5 +54,13 @@ public class Item {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public boolean isBought() {
+        return bought;
+    }
+
+    public void setBought(boolean bought) {
+        this.bought = bought;
     }
 }
