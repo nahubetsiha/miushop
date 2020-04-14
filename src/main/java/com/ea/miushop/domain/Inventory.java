@@ -13,9 +13,10 @@ public class Inventory {
     private Long inventoryId;
 	
 	@OneToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
 	private Product product;
-	
+
+	@Column(nullable = false)
 	private Integer quantity;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
