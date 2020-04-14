@@ -10,11 +10,13 @@ public class StorageMovement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storageMovementId;
 
+    @Column(nullable = false)
     private StorageMovementType storageMovementType;
 
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime movementDate;
 
+    @Column(nullable = false)
     private Integer quantity;
 
     public StorageMovement() {

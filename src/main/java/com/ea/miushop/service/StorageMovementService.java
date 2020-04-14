@@ -7,7 +7,7 @@ import java.util.List;
 
 @Service
 public interface StorageMovementService {
-    List<StorageMovement> getAllMovements();
-    StorageMovement getStorageMovement();
-    void enterMovement(StorageMovement movement);
+    List<StorageMovement> getAllStorageMovements();
+    StorageMovement getStorageMovement(Long id);
+    void makeStorageMovement(StorageMovement movement);
 }
