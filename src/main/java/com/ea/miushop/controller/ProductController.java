@@ -1,4 +1,4 @@
-package com.ea.miushop.repository;
+package com.ea.miushop.controller;
 
 public class ProductController {
 
