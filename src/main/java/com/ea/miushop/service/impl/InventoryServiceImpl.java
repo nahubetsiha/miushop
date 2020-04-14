@@ -3,6 +3,7 @@ package com.ea.miushop.service.impl;
 import java.util.List;
 
 import com.ea.miushop.domain.Inventory;
+import com.ea.miushop.domain.Product;
 import com.ea.miushop.domain.StorageMovement;
 import com.ea.miushop.repository.InventoryRepository;
 import com.ea.miushop.service.InventoryService;
@@ -41,6 +42,18 @@ public class InventoryServiceImpl implements InventoryService {
 	@Override
 	public void updateInventory(Inventory inventory) {
 		inventoryRepository.save(inventory);
+	}
+
+	@Override
+	public Integer getInventoryQuantity(Product product) {
+		Inventory inventory = inventoryRepository.findByProduct(product);
+
+		return inventory.getQuantity();
+	}
+
+	@Override
+	public Inventory getInventoryByProduct(Product product) {
+		return inventoryRepository.findByProduct(product);
 	}
 
 }
