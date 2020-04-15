@@ -1,5 +1,6 @@
 package com.ea.miushop.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,9 +15,10 @@ public class Role {
 	
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
+	 @Column(name = "Role_Id")	 
 	 private Long role_id=null;
 	 
-	 private String role_name;
+	 private String role;
 
       
 	public Long getRole_id() {
@@ -27,14 +29,13 @@ public class Role {
 			this.role_id = role_id;
 		}
 
-	public String getRole_name() {
-		return role_name;
+	public String getRole() {
+		return role;
 	}
 
-	public void setRole_name(String role_name) {
-		this.role_name = role_name;
+	public void setRole(String role) {
+		this.role = role;
 	}
 
-
-	 
+		 
 }

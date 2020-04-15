@@ -26,9 +26,6 @@ public class Purchaser {
 
 	    @Column(name = "EMAIL", nullable = false)
 	    private String email;
-	    
-	    @OneToMany(mappedBy = "purchaser")
-	    private Purchase_Order  purchaseOrder;
 
 		public Long getPurchaser_Id() {
 			return purchaser_Id;
@@ -62,13 +59,5 @@ public class Purchaser {
 			this.email = email;
 		}
 
-		public Purchase_Order getPurchaseOrder() {
-			return purchaseOrder;
-		}
-
-		public void setPurchaseOrder(Purchase_Order purchaseOrder) {
-			this.purchaseOrder = purchaseOrder;
-		} 
-		
-	    
+		    
 }

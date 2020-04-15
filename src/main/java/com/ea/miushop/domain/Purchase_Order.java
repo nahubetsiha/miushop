@@ -3,12 +3,14 @@ package com.ea.miushop.domain;
 import java.math.BigDecimal;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -17,41 +19,31 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Purchase_Orders")
 public class Purchase_Order {
-	
-	@Id @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long orderId;
-	
-	@Id @GeneratedValue (strategy = GenerationType.IDENTITY)
-	private Long purchaser_id;
-	
+
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name = "User_Id")
+	private Long id = null;
+	   
+	   
+	@Column(name = "Item_Price") 
     private BigDecimal itemPrice;
-    
-    private String reciept;
+	
+	
+	@Column(name = "Reciept")
+	@Lob
+    private byte[] reciept;
     
     
     @ManyToOne
     @JoinColumn(name = "purchaser_Id")
-    private Purchaser purchaser;
+    private User purchaser;
 
     
-    @OneToOne(mappedBy="purchaseOrder", cascade = {CascadeType.PERSIST, CascadeType.MERGE}) 
-	private Order order;
-	public Long getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
-	}
-
-	public Long getPurchaser_id() {
-		return purchaser_id;
-	}
-
-	public void setPurchaser_id(Long purchaser_id) {
-		this.purchaser_id = purchaser_id;
-	}
-
+    @ManyToOne
+    @JoinColumn(name = "orderId")	
+    private Order order;
+    
+	
 	public BigDecimal getItemPrice() {
 		return itemPrice;
 	}
@@ -60,19 +52,27 @@ public class Purchase_Order {
 		this.itemPrice = itemPrice;
 	}
 
-	public String getReciept() {
+	public byte[] getReciept() {
 		return reciept;
 	}
 
-	public void setReciept(String reciept) {
+	public void setReciept(byte[] reciept) {
 		this.reciept = reciept;
 	}
 
-	public Purchaser getPurchaser() {
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public User getPurchaser() {
 		return purchaser;
 	}
 
-	public void setPurchaser(Purchaser purchaser) {
+	public void setPurchaser(User purchaser) {
 		this.purchaser = purchaser;
 	}
 
@@ -83,7 +83,5 @@ public class Purchase_Order {
 	public void setOrder(Order order) {
 		this.order = order;
 	}
-    
-  
 
 }

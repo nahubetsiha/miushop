@@ -1,55 +1,78 @@
 package com.ea.miushop.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class User_Role {
-	   
-	@Id 
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long role_id;
 	
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long userid;
+	
+ 	String userName;
+	 
+	String password;
+
+    private String firstName;
+
+
+    private String lastName;
+
+
+    private String email;
     
-    @ManyToMany(fetch=FetchType.EAGER, cascade= {CascadeType.PERSIST,CascadeType.MERGE })
-    private List<User> users = new ArrayList<User>();
+    private Boolean active;
+	
+	private String role_name;
 
-	public Long getRole_id() {
-		return role_id;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setRole_id(Long role_id) {
-		this.role_id = role_id;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	public Long getUserid() {
-		return userid;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setUserid(Long userid) {
-		this.userid = userid;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public List<User> getUsers() {
-		return users;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
-    
-    
-    
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getRole_name() {
+		return role_name;
+	}
+
+	public void setRole_name(String role_name) {
+		this.role_name = role_name;
+	}
+
 
 }
