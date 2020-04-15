@@ -1,3 +1,4 @@
+
 package com.ea.miushop.domain;
 
 import javax.persistence.*;
