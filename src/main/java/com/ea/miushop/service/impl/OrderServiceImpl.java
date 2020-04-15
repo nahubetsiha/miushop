@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
                 if (quantityInInventory >= orderQuantity) {
                     Inventory inventory = inventoryService.getInventoryByProduct(i.getProduct());
                     inventory.setQuantity(quantityInInventory-orderQuantity);
-                    inventoryService.updateInventory(inventory);
+//                    inventoryService.updateInventory(inventory);
                     i.setBought(true);
 
                 } else {
@@ -111,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
             Inventory inventory = inventoryService.getInventoryByProduct(purchaseOrder.getProduct());
             inventory.setQuantity(oldQuantity+boughtQuantity);
 
-            inventoryService.updateInventory(inventory);
+//            inventoryService.updateInventory(inventory);
 
             purchaseOrder.setBought(true);
 

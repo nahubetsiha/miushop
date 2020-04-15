@@ -58,4 +58,8 @@ public class Inventory {
 	public void setMovements(List<StorageMovement> movements) {
 		this.movements = movements;
 	}
+
+	public void addMovements(StorageMovement movement) {
+		this.movements.add(movement);
+	}
 }

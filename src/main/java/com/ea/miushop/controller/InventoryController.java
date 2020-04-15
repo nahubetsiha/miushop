@@ -1,6 +1,7 @@
 package com.ea.miushop.controller;
 
 import com.ea.miushop.domain.Inventory;
+import com.ea.miushop.domain.StorageMovement;
 import com.ea.miushop.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,17 +17,23 @@ public class InventoryController {
     InventoryService inventoryService;
 
     @GetMapping(value = "all")
-    public List<Inventory> getAllInventory(){
+    public List<Inventory> getAllInventory() {
         return inventoryService.getAllInventory();
     }
 
     @GetMapping(value = "{inventoryId}")
-    public Inventory getInventoryById(@PathVariable Long inventoryId){
+    public Inventory getInventoryById(@PathVariable Long inventoryId) {
         return inventoryService.getInventory(inventoryId);
     }
 
     @PostMapping(value = "new-inventory", produces = MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-    public void enterInventory(@RequestBody Inventory inventory){
+    public void enterInventory(@RequestBody Inventory inventory) {
         inventoryService.enterInventory(inventory);
+    }
+
+    @PutMapping(value = "update-inventory/{inventoryId}", produces = MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+    public void updateInventory(@RequestBody StorageMovement storageMovement,
+                                @PathVariable Long inventoryId) {
+        inventoryService.updateInventory(inventoryId, storageMovement);
     }
 }
