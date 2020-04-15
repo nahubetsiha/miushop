@@ -1,5 +1,6 @@
 package com.ea.miushop.service.impl;
 
+import com.ea.miushop.domain.Category;
 import com.ea.miushop.domain.Product;
 import com.ea.miushop.repository.ProductRepository;
 import com.ea.miushop.service.ProductService;
@@ -29,5 +30,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void createProduct(Product product) {
         productRepository.save(product);
+    }
+
+    @Override
+    public List<Product> getProductsByCategory(Category category) {
+        return productRepository.getProductsByCategory(category);
     }
 }
