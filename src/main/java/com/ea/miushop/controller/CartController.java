@@ -50,7 +50,7 @@ public class CartController {
 		cartService.checkOut(items);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, path = "/cart/{itemId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(value = "/cart/{itemId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public void removeFromCart(@PathVariable("itemId") Long itemId) {
 		cartService.removeItem(itemId);

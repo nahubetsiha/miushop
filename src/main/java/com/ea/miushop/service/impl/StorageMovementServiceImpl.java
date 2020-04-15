@@ -23,7 +23,7 @@ public class StorageMovementServiceImpl implements StorageMovementService {
 
     @Override
     public StorageMovement getStorageMovement(Long id) {
-        return storageMovementRepository.getOne(id);
+        return storageMovementRepository.findById(id).get();
     }
 
     @Override

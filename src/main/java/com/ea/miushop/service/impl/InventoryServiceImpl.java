@@ -26,7 +26,7 @@ public class InventoryServiceImpl implements InventoryService {
 
 	@Override
 	public Inventory getInventory(Long id) {
-		return inventoryRepository.getOne(id);
+		return inventoryRepository.findById(id).get();
 	}
 
 //	@Override
@@ -47,7 +47,6 @@ public class InventoryServiceImpl implements InventoryService {
 	@Override
 	public Integer getInventoryQuantity(Product product) {
 		Inventory inventory = inventoryRepository.findByProduct(product);
-
 		return inventory.getQuantity();
 	}
 
