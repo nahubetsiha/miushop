@@ -17,6 +17,8 @@ public interface CartService {
 	void checkOut(List<Item> items);
 	void removeItem(Long itemId);
 	List<Item> getAllItemsInCart(Long cartId);
+	Item getItem(Long cartId, Long itemId);
+	void deleteCart(Long cartId);
 	
 
 }

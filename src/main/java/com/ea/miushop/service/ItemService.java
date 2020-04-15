@@ -1,5 +1,6 @@
 package com.ea.miushop.service;
 
+
 import com.ea.miushop.domain.Cart;
 import com.ea.miushop.domain.Item;
 import com.ea.miushop.domain.Order;
@@ -15,6 +16,6 @@ public interface ItemService {
     Item getItem(Long id);
     void saveItem(Item item);
     List<Item> findAllByOrder(Order order);
-	void removeCartItem(Long CartItemId);
-	void removeAllCartItems(Cart cart);
+	  void removeCartItem(Long CartItemId);
+	  void removeAllCartItems(Cart cart);
 }

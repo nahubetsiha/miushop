@@ -6,6 +6,7 @@ import com.ea.miushop.repository.OrderRepository;
 import com.ea.miushop.repository.PurchaseOrderRepository;
 import com.ea.miushop.service.InventoryService;
 import com.ea.miushop.service.ItemService;
+import com.ea.miushop.service.MailService;
 import com.ea.miushop.service.OrderService;
 import com.ea.miushop.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,110 +19,116 @@ import java.util.List;
 @Transactional
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    OrderRepository orderRepository;
+	@Autowired
+	OrderRepository orderRepository;
+	@Autowired
+	MailService mailService;
+	@Autowired
+	ItemService itemService;
 
-    @Autowired
-    ItemService itemService;
+	@Autowired
+	InventoryService inventoryService;
 
-    @Autowired
-    InventoryService inventoryService;
+	@Autowired
+	PurchaseOrderService purchaseOrderService;
 
-    @Autowired
-    PurchaseOrderService purchaseOrderService;
+	@Override
+	public List<Order> getAllOrders() {
+		return orderRepository.findAll();
+	}
 
-    @Override
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
-    }
+	@Override
+	public Order getOrder(Long id) {
+		return orderRepository.getOne(id);
+	}
 
-    @Override
-    public Order getOrder(Long id) {
-        return orderRepository.getOne(id);
-    }
+	@Override
+	public void makeOrder(Order order) {
 
-    @Override
-    public void makeOrder(Order order) {
+		for (Item i : order.getItems()) {
+			i.setOrder(order);
+			itemService.saveItem(i);
+			orderRepository.save(order);
+			System.out.println("hi");
+		}
+		Mail mail = new Mail();
+		mail.setMailFrom("shop@miu.edu");
+		mail.setMailTo("merryhaddis@gmail.com");
+		mail.setMailSubject("Order Confirmation");
+		mail.setMailContent("Order has been sent successfully, ");
+		mailService.sendEmail(mail);
+	}
 
-        for(Item i: order.getItems()){
-            i.setOrder(order);
-            itemService.saveItem(i);
-            orderRepository.save(order);
-            System.out.println("hi");
-        }
-    }
+	@Override
+	public void processOrder(Long orderId) {
 
-    @Override
-    public void processOrder(Long orderId) {
+		Order order = orderRepository.getOne(orderId);
 
-        Order order = orderRepository.getOne(orderId);
+		boolean allItemsBought = true;
 
-        boolean allItemsBought = true;
+		List<Item> itemList = itemService.findAllByOrder(order);
 
-        List<Item> itemList = itemService.findAllByOrder(order);
+		for (Item i : itemList) {
 
-        for(Item i: itemList){
+			if (!i.isBought()) {
+				int orderQuantity = i.getQuantity();
+				int quantityInInventory = inventoryService.getInventoryQuantity(i.getProduct());
 
-            if (!i.isBought()) {
-                int orderQuantity = i.getQuantity();
-                int quantityInInventory = inventoryService.getInventoryQuantity(i.getProduct());
+				if (quantityInInventory >= orderQuantity) {
+					Inventory inventory = inventoryService.getInventoryByProduct(i.getProduct());
+					inventory.setQuantity(quantityInInventory - orderQuantity);
+					inventoryService.updateInventory(inventory);
+					i.setBought(true);
 
-                if (quantityInInventory >= orderQuantity) {
-                    Inventory inventory = inventoryService.getInventoryByProduct(i.getProduct());
-                    inventory.setQuantity(quantityInInventory-orderQuantity);
-                    inventoryService.updateInventory(inventory);
-                    i.setBought(true);
+				} else {
+					allItemsBought = false;
+					PurchaseOrder purchaseOrder = new PurchaseOrder();
+					purchaseOrder.setOrder(order);
+					int neededQuantity = orderQuantity - quantityInInventory;
+					purchaseOrder.setProduct(i.getProduct());
+					purchaseOrder.setCategory(i.getProduct().getCategory());
+					purchaseOrder.setQuantity(neededQuantity);
 
-                } else {
-                    allItemsBought = false;
-                    PurchaseOrder purchaseOrder = new PurchaseOrder();
-                    purchaseOrder.setOrder(order);
-                    int neededQuantity = orderQuantity - quantityInInventory;
-                    purchaseOrder.setProduct(i.getProduct());
-                    purchaseOrder.setCategory(i.getProduct().getCategory());
-                    purchaseOrder.setQuantity(neededQuantity);
+					purchaseOrderService.savePurchaseOrder(purchaseOrder);
+					order.addPurchaseOrder(purchaseOrder);
 
-                    purchaseOrderService.savePurchaseOrder(purchaseOrder);
-                    order.addPurchaseOrder(purchaseOrder);
+					orderRepository.save(order);
+				}
+			}
+		}
 
+		order.setOrderStatus(Order.Status.PROCESSED);
+		orderRepository.save(order);
 
-                    orderRepository.save(order);
-                }
-            }
-        }
+		if (allItemsBought) {
+			order.setOrderStatus(Order.Status.BOUGHT);
+			orderRepository.save(order);
+		}
+	}
 
-        order.setOrderStatus(Order.Status.PROCESSED);
-        orderRepository.save(order);
+	@Override
+	public void buyOrder(Long purchaseOrderId) {
 
-        if(allItemsBought){
-            order.setOrderStatus(Order.Status.BOUGHT);
-            orderRepository.save(order);
-        }
-    }
+		PurchaseOrder purchaseOrder = purchaseOrderService.getPurchaseOrder(purchaseOrderId);
 
-    @Override
-    public void buyOrder(Long purchaseOrderId) {
+		if (purchaseOrder != null && !purchaseOrder.isBought()) {
+			int oldQuantity = inventoryService.getInventoryQuantity(purchaseOrder.getProduct());
+			int boughtQuantity = purchaseOrder.getQuantity();
 
-        PurchaseOrder purchaseOrder = purchaseOrderService.getPurchaseOrder(purchaseOrderId);
+			Inventory inventory = inventoryService.getInventoryByProduct(purchaseOrder.getProduct());
+			inventory.setQuantity(oldQuantity + boughtQuantity);
 
-        if(purchaseOrder!= null && !purchaseOrder.isBought()){
-            int oldQuantity = inventoryService.getInventoryQuantity(purchaseOrder.getProduct());
-            int boughtQuantity = purchaseOrder.getQuantity();
+			inventoryService.updateInventory(inventory);
 
-            Inventory inventory = inventoryService.getInventoryByProduct(purchaseOrder.getProduct());
-            inventory.setQuantity(oldQuantity+boughtQuantity);
+			purchaseOrder.setBought(true);
 
-            inventoryService.updateInventory(inventory);
+			Order order = orderRepository.findByPurchaseOrders(purchaseOrder);
+			processOrder(order.getOrderId());
+		}
+	}
 
-            purchaseOrder.setBought(true);
+	@Override
+	public void deliverOrder(Order order) {
 
-            Order order = orderRepository.findByPurchaseOrders(purchaseOrder);
-            processOrder(order.getOrderId());
-        }
-    }
-
-    @Override
-    public void deliverOrder(Order order) {
-
-    }
+	}
 }

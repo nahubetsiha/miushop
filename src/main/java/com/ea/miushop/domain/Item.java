@@ -3,6 +3,7 @@ package com.ea.miushop.domain;
 import java.math.BigDecimal;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 
 @Entity
 @Table(name = "items")
@@ -15,6 +16,7 @@ public class Item {
 	@JoinColumn(name = "product_id")
 	private Product product;
 
+	@Max(3)
 	private int quantity;
 
 	private boolean bought = false;
