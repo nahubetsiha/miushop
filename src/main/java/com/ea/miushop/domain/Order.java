@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,7 +17,7 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<Item> items;
 
-    private LocalDate orderDate;
+    private LocalDate orderDate = LocalDate.now();
 
     private String orderNumber;
 
@@ -27,6 +28,9 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "order")
+    private List<PurchaseOrder> purchaseOrders = new ArrayList<>();
 
     public Long getOrderId() {
         return orderId;
@@ -74,5 +78,17 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<PurchaseOrder> getPurchaseOrders() {
+        return purchaseOrders;
+    }
+
+    public void setPurchaseOrders(List<PurchaseOrder> purchaseOrders) {
+        this.purchaseOrders = purchaseOrders;
+    }
+
+    public void addPurchaseOrder(PurchaseOrder purchaseOrder) {
+        this.purchaseOrders.add(purchaseOrder);
     }
 }

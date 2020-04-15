@@ -2,6 +2,7 @@ package com.ea.miushop.service.impl;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -52,9 +53,38 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findByEmail(email);
 
 	}
-
+  
+	
 	public User findUserByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
 	
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User getUser(Long id) {
+        return userRepository.getOne(id);
+    }
+
+
+	@Override
+	public void inActiveUser(Long id) {
+       User user =  getUser(id);	
+       if(user != null) {
+    	   user.setActive(false);
+    	   userRepository.save(user);
+       }
+	} 
+     @Override
+   	public void activeUser(Long id) {     
+    	 User user =  getUser(id);	
+         if(user != null) {
+      	   user.setActive(true);
+    	   userRepository.save(user);
+
+         }
+	}
 }
