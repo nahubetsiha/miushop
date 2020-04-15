@@ -82,15 +82,5 @@ public class Item {
 		this.price = price;
 	}
 
-  public void setOrder(Order order) {
-      this.order = order;
-  }
-
-  public boolean isBought() {
-      return bought;
-  }
-
-  public void setBought(boolean bought) {
-      this.bought = bought;
-  }
+ 
 }

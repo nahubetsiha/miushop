@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ea.miushop.domain.Role;
@@ -45,6 +46,23 @@ public class UserController {
 		return userService.findByEmail(email);
 
 	}
+    
+    @GetMapping(value="/getAll")
+    public ResponseEntity<?> getAllUsers(){
+    	return ResponseEntity.ok(userService.getAllUsers());
+    }
+    
+    @GetMapping(value="/deactivate")
+    public ResponseEntity<?> inActiveUser(@RequestParam("userId") Long userId){
+    	userService.inActiveUser(userId);
+    	return ResponseEntity.accepted().build();
+    }
+    
+    @GetMapping(value="/activate")
+    public ResponseEntity<?> activeUser(@RequestParam("userId") Long userId){
+    	userService.activeUser(userId);
+    	return ResponseEntity.accepted().build();
+    }
  
 
 }
