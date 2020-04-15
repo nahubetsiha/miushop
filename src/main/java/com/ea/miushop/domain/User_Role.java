@@ -22,9 +22,8 @@ public class User_Role {
 
     private String email;
     
-    private Boolean active;
 	
-	private String role_name;
+	private Roles role_name;
 
 	public String getUserName() {
 		return userName;
@@ -66,13 +65,16 @@ public class User_Role {
 		this.email = email;
 	}
 
-	public String getRole_name() {
+
+	public Roles getRole_name() {
 		return role_name;
 	}
 
-	public void setRole_name(String role_name) {
+	public void setRole_name(Roles role_name) {
 		this.role_name = role_name;
 	}
+
+
 
 
 }

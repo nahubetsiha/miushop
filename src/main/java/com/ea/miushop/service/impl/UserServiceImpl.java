@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 		user.setEmail(userRole.getEmail());
 		user.setActive(true);
 		user.setEnabled(true);
-        Role role= roleRepository.findByRole(userRole.getRole_name());
+        Role role= roleRepository.findByRole(userRole.getRole_name().name());
         user.setRoles(new HashSet<Role>(Arrays.asList(role)));
         return userRepository.save(user);
 
