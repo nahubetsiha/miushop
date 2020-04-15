@@ -26,7 +26,7 @@ public class CartController {
 	}
 
 	@GetMapping(value = "items/{cartId}")
-	public List<Item> getAllProductsID(@PathVariable Long cartId) {
+	public List<Item> getAllItemsInCart(@PathVariable Long cartId) {
 		return cartService.getAllItemsInCart(cartId);
 	}
 
