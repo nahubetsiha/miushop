@@ -25,12 +25,12 @@ public class SwaggerConfig {
                 .build().apiInfo(apiEndPointsInfo());
     }
     private ApiInfo apiEndPointsInfo() {
-        return new ApiInfoBuilder().title("Spring Boot REST API")
-                .description("Employee Management REST API")
-                .contact(new Contact("Ramesh Fadatare", "www.javaguides.net", "ramesh24fadatare@gmail.com"))
-                .license("Apache 2.0")
-                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
-                .version("1.0.0")
+        return new ApiInfoBuilder().title("MIU Shop Spring Boot REST API")
+                .description("CS544 - Entreprise Architecture")
+                .contact(new Contact("Team: Zero Bug","", ""))
+//                .license("Apache 2.0")
+//                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
+//                .version("1.0.0")
                 .build();
     }
 }

@@ -9,13 +9,17 @@ import com.ea.miushop.domain.StorageMovementType;
 import com.ea.miushop.repository.InventoryRepository;
 import com.ea.miushop.repository.StorageMovementRepository;
 import com.ea.miushop.service.InventoryService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import javax.persistence.EntityManager;
 
 @Service
-@Transactional
+@Transactional(propagation= Propagation.REQUIRES_NEW, isolation= Isolation.READ_COMMITTED)
 public class InventoryServiceImpl implements InventoryService {
 
 	@Autowired
@@ -23,6 +27,9 @@ public class InventoryServiceImpl implements InventoryService {
 
 	@Autowired
 	StorageMovementRepository storageMovementRepository;
+	
+	@Autowired
+	EntityManager entityManager;
 
 	@Override
 	public List<Inventory> getAllInventory() {
@@ -55,10 +62,15 @@ public class InventoryServiceImpl implements InventoryService {
 		switch (movementType) {
 			case IN:
 				sign = 1;
+				break;
 			case OUT:
 				sign = -1;
+				break;
 		}
 		int finalSign = sign;
+		
+//		Inventory modifiedInventory = entityManager.getReference(Inventory.class, inventoryId);
+			
 		inventoryRepository.findById(inventoryId)
 				.map( inventory -> {
 					inventory.setQuantity( inventory.getQuantity() + (finalSign * storageMovement.getQuantity()));
@@ -76,6 +88,14 @@ public class InventoryServiceImpl implements InventoryService {
 	@Override
 	public Inventory getInventoryByProduct(Product product) {
 		return inventoryRepository.findByProduct(product);
+	}
+
+	@Override
+	public List<Inventory> findAllSubSelect() {
+		// Need to Hydrate because of LAZY load
+		List<Inventory> inventoryList = this.getAllInventory();
+		inventoryList.get(0).getMovements().get(0);
+		return inventoryList;
 	}
 
 }
