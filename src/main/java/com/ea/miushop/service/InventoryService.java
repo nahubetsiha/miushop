@@ -14,7 +14,7 @@ public interface InventoryService {
     Inventory getInventory(Long id);
 //    List<StorageMovement> getAllMovements(Long id);
     void enterInventory(Inventory inventory);
-    void updateInventory(Inventory inventory);
+    void updateInventory(Long inventoryId, StorageMovement storageMovement);
     Integer getInventoryQuantity(Product product);
     Inventory getInventoryByProduct(Product product);
 }

@@ -12,6 +12,9 @@ public class Product {
     @Column(nullable = false)
     private String productName;
 
+    @Column(nullable = false)
+    private Boolean catalogEnabled;
+
     private String productWalmartLink;
 
     @ManyToOne

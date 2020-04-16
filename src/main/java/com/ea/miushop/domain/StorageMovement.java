@@ -14,7 +14,7 @@ public class StorageMovement {
     private StorageMovementType storageMovementType;
 
 //    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime movementDate;
+    private LocalDateTime movementDate = LocalDateTime.now();
 
     @Column(nullable = false)
     private Integer quantity;
