@@ -5,5 +5,6 @@ import com.ea.miushop.domain.User;
 
 public interface RoleService {
 	public Role findByRole(String role);
+	public void save(String role);
 
 }

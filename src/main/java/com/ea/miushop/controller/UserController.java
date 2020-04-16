@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,7 @@ public class UserController {
     RoleService roleService;
     
    
-    @PostMapping(value="/registration")
+    @PostMapping(value="/signup")
     public ResponseEntity<?> create(@RequestBody User_Role userRole ){
     	
     	User userExists = userService.findUserByUserName(userRole.getUserName());
@@ -40,6 +41,12 @@ public class UserController {
             return ResponseEntity.accepted().build();
             
       }
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PostMapping("/role")
+    public ResponseEntity<?> createRole(@RequestParam("role") String role){
+    	roleService.save(role);
+        return ResponseEntity.accepted().build();
+    }
     
     @GetMapping(value="/findbyemail")
 	public User findByEmail(String email) {		
@@ -47,10 +54,6 @@ public class UserController {
 
 	}
     
-    @GetMapping(value="/getAll")
-    public ResponseEntity<?> getAllUsers(){
-    	return ResponseEntity.ok(userService.getAllUsers());
-    }
     
     @GetMapping(value="/deactivate")
     public ResponseEntity<?> inActiveUser(@RequestParam("userId") Long userId){

@@ -3,69 +3,69 @@ package com.ea.miushop.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.annotation.Resource;
+
+import com.ea.miushop.configuration.filter.JwtAuthenticationFilter;
 import com.ea.miushop.service.impl.MyUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
-	
-	
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	    @Autowired
-	    private PasswordEncoder bCryptPasswordEncoder;
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-	    @Autowired
-	    private MyUserDetailsService userDetailsService;
+	@Autowired
+	private JwtAuthenticationEntryPoint unauthorizedHandler;
 
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 
+	@Autowired
+	public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(encoder());
+	}
 
-	    @Override
-	    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-	                auth
-	                    .userDetailsService(userDetailsService)
-	                    .passwordEncoder(bCryptPasswordEncoder);
-	    }
+	@Bean
+	public JwtAuthenticationFilter authenticationTokenFilterBean() throws Exception {
+		return new JwtAuthenticationFilter();
+	}
 
-	    @Override
-	    protected void configure(HttpSecurity http) throws Exception {
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/", "/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
+				"/configuration/security", "/swagger-ui.html", "/webjars/**", "/token");
+	}
 
-	        http.
-	                authorizeRequests()
-	                .antMatchers("/").permitAll()
-	                .antMatchers("/login").permitAll()
-	                .antMatchers("/registration").permitAll()
-	                .antMatchers("/api/admin/**").hasAuthority("ADMIN")
-	                .antMatchers("/api/purchaser/**").hasAuthority("PURCHASER")
-	                .antMatchers("/api/student/**").hasAuthority("STUDENT").anyRequest()
-	                .authenticated().and().csrf().disable().formLogin()
-	                .defaultSuccessUrl("/swagger-ui.html")
-	                .and().logout()
-	                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-	                .logoutSuccessUrl("/login").and().exceptionHandling()
-	                .accessDeniedPage("/access-denied");
-	    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/api/user/signup", "/token").permitAll()
+				.anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-	    @Override
-	    public void configure(WebSecurity web) throws Exception {
-	        web
-	                .ignoring()
-	                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
-	    }
-	    
-	    @Bean
-	    public PasswordEncoder passwordEncoder() {
-	        return new BCryptPasswordEncoder();
-	    }
+		http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
 	}
 
+	@Bean
+	public BCryptPasswordEncoder encoder() {
+		return new BCryptPasswordEncoder();
+	}
 
+}
