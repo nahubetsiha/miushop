@@ -1,5 +1,8 @@
 package com.ea.miushop.domain;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +22,14 @@ public class Inventory {
 	@Column(nullable = false)
 	private Integer quantity;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable ( name="inventory_movement", joinColumns={@JoinColumn(name="inventory_id")},
 			inverseJoinColumns={ @JoinColumn(name="storage_movement_id", unique=true)} )
 	private List<StorageMovement> movements = new ArrayList<StorageMovement>();
+
+	@Version
+	private int version = 0;
 
 	public Inventory() {
 	}
@@ -61,5 +68,13 @@ public class Inventory {
 
 	public void addMovements(StorageMovement movement) {
 		this.movements.add(movement);
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 }

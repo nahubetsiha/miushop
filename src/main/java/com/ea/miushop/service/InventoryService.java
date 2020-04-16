@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.ea.miushop.domain.Inventory;
 
-@Service
 public interface InventoryService {
 	List<Inventory> getAllInventory();
     Inventory getInventory(Long id);
@@ -17,4 +16,5 @@ public interface InventoryService {
     void updateInventory(Long inventoryId, StorageMovement storageMovement);
     Integer getInventoryQuantity(Product product);
     Inventory getInventoryByProduct(Product product);
+    List<Inventory> findAllSubSelect();
 }

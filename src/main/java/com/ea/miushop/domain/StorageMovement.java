@@ -1,6 +1,9 @@
 package com.ea.miushop.domain;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 
 @Table(name = "storage_movements")
@@ -14,6 +17,7 @@ public class StorageMovement {
     private StorageMovementType storageMovementType;
 
 //    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private LocalDateTime movementDate = LocalDateTime.now();
 
     @Column(nullable = false)
