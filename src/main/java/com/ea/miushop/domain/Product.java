@@ -21,6 +21,9 @@ public class Product {
     @JoinColumn(name = "product_category_id")
     private Category category;
 
+    @Version
+    private int version = 0;
+
     public Product() {
     }
 
@@ -54,5 +57,21 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Boolean getCatalogEnabled() {
+        return catalogEnabled;
+    }
+
+    public void setCatalogEnabled(Boolean catalogEnabled) {
+        this.catalogEnabled = catalogEnabled;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }
