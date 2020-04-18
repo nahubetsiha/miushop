@@ -3,8 +3,10 @@ package com.ea.miushop.domain;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Table(name = "storage_movements")
 @Entity
@@ -17,7 +19,9 @@ public class StorageMovement {
     private StorageMovementType storageMovementType;
 
 //    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+//    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime movementDate = LocalDateTime.now();
 
     @Column(nullable = false)

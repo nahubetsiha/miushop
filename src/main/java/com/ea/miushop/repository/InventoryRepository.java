@@ -10,7 +10,7 @@ import com.ea.miushop.domain.Inventory;
 import java.util.List;
 
 @Repository
-public interface InventoryRepository extends JpaRepository<Inventory, Long> {
+public interface InventoryRepository extends JpaRepository<Inventory, Long>, InventoryRepositoryCustom {
     public Inventory findByProduct(Product product);
 //    List<StorageMovement> getAllMovements(Long id);
 }

@@ -98,4 +98,9 @@ public class InventoryServiceImpl implements InventoryService {
 		return inventoryList;
 	}
 
+	@Override
+	public List<StorageMovement> findStorageMovements(Long inventoryId) {
+		return inventoryRepository.findStorageMovementCriteria(inventoryId);
+	}
+
 }
