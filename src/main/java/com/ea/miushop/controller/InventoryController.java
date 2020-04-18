@@ -36,4 +36,10 @@ public class InventoryController {
                                 @PathVariable Long inventoryId) {
         inventoryService.updateInventory(inventoryId, storageMovement);
     }
+
+    @GetMapping(value = "{inventoryId}/movements")
+    public List<StorageMovement> getMovements(@PathVariable Long inventoryId) {
+        return inventoryService.findStorageMovements(inventoryId);
+    }
+
 }

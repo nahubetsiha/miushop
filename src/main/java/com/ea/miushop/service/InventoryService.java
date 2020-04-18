@@ -1,5 +1,6 @@
 package com.ea.miushop.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ea.miushop.domain.Product;
@@ -17,4 +18,5 @@ public interface InventoryService {
     Integer getInventoryQuantity(Product product);
     Inventory getInventoryByProduct(Product product);
     List<Inventory> findAllSubSelect();
+    List<StorageMovement> findStorageMovements(Long inventoryId);
 }
